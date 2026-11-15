@@ -1,0 +1,41 @@
+{
+  "version": 2,
+  "public": true,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/api/signatures", "destination": "/api/signatures.js" },
+    { "source": "/api/report", "destination": "/api/report.js" },
+    { "source": "/api/upload", "destination": "/api/upload.js" },
+    { "source": "/download", "destination": "/AegisScanner.exe" },
+    { "source": "/(.*)", "destination": "/$1" }
+  ],
+  "headers": [
+    {
+      "source": "/AegisScanner.exe",
+      "headers": [
+        {
+          "key": "Content-Disposition",
+          "value": "attachment; filename=\"AegisScanner.exe\""
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/octet-stream"
+        }
+      ]
+    },
+    {
+      "source": "/AegisScanner.zip",
+      "headers": [
+        {
+          "key": "Content-Disposition",
+          "value": "attachment; filename=\"AegisScanner.zip\""
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/zip"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "aegis-scanner-web",
+  "version": "1.0.0",
+  "description": "Aegis Forensic Scanner Web Portal & Live Telemetry Dashboard",
+  "main": "api/signatures.js",
+  "scripts": {
+    "start": "node api/server.js"
+  },
+  "keywords": ["anticheat", "forensic", "scanner", "screenshare"],
+  "author": "Antigravity",
+  "license": "ISC"
+}

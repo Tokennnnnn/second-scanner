@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AEGIS // Advanced Forensic & Screenshare Verification Engine</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Ambient cyber glow background -->
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-shield">&#x25C8;</span>
+      <span class="brand-name">AEGIS<span class="brand-sub">.AC</span></span>
+    </div>
+    <div class="nav-links">
+      <a href="#features">Engine</a>
+      <a href="#upload">Ingest Targets</a>
+      <a href="#feed">Live Feed</a>
+      <a href="/download" class="btn-nav-download">Download Scanner (.exe)</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="badge-status">
+        <span class="pulse-dot"></span> AUTOMATED FORENSIC & SCREENSHARE VERIFICATION
+      </div>
+      <h1 class="hero-title">
+        INVARIANT DETECTION.<br>
+        <span class="text-gradient">ZERO FALSE ESCAPES.</span>
+      </h1>
+      <p class="hero-desc">
+        Next-generation client verification scanner. Automated execution with zero manual choices.
+        Identifies unapproved loaders, memory injection, and anti-forensic tampering even if binaries are renamed, moved, or deleted.
+      </p>
+
+      <div class="hero-actions">
+        <a href="/AegisScanner.exe" download="AegisScanner.exe" class="btn-primary" id="downloadBtn">
+          <span class="btn-icon">&#x2B07;</span>
+          <span class="btn-text">
+            <strong>DOWNLOAD SCANNER (.EXE)</strong>
+            <small>Direct Auto-Run Standalone (x64 Windows)</small>
+          </span>
+        </a>
+        <a href="/AegisScanner.zip" download="AegisScanner.zip" class="btn-secondary" style="font-size:0.85rem;">
+          <span class="btn-icon">&#x1F4E6;</span> Portable (.ZIP)
+        </a>
+        <a href="#upload" class="btn-secondary">
+          <span class="btn-icon">&#x2912;</span> Upload Target .EXE
+        </a>
+      </div>
+
+      <!-- Feature cards grid -->
+      <div class="feature-grid" id="features">
+        <div class="feature-card">
+          <div class="card-icon">&#x29BF;</div>
+          <h3>Rename-Resilient</h3>
+          <p>Utilizes Mandiant Imphash, MSVC Rich Header decryption, and PE section hashes. Renaming a binary to <code>calc.exe</code> or <code>explorer.exe</code> will not evade detection.</p>
+        </div>
+        <div class="feature-card">
+          <div class="card-icon">&#x2318;</div>
+          <h3>Forensic Memory & Trails</h3>
+          <p>Audits Windows Prefetch (<code>.pf</code>), Background Activity Moderator (BAM), and UserAssist to detect executables that were closed or deleted prior to the scan.</p>
+        </div>
+        <div class="feature-card">
+          <div class="card-icon">&#x26A0;</div>
+          <h3>Anti-Forensics Wiper Catch</h3>
+          <p>Detects attempts to wipe evidence: Event Log clearing (Event 104 / 1102), Prefetch folder purging, and trace wiper utilities (PrivaZer, BleachBit, USN wipers).</p>
+        </div>
+        <div class="feature-card">
+          <div class="card-icon">&#x26A1;</div>
+          <h3>100% Zero-Click Auto Scan</h3>
+          <p>Double-click the downloaded binary and it runs an exhaustive 4-phase audit immediately. Outputs an instant green <strong>[CLEAN]</strong> or red <strong>[DETECTED]</strong> verdict.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Upload & Ingestion Section -->
+    <section class="section-panel" id="upload">
+      <div class="panel-header">
+        <h2>&#x2912; Target Executable Ingestion</h2>
+        <p>Drop any sample <code>.exe</code> or <code>.dll</code> here. The engine extracts structural signatures so every client automatically detects it.</p>
+      </div>
+
+      <div class="drop-zone" id="dropZone">
+        <div class="drop-icon">&#x2B06;</div>
+        <h3>Drag & Drop Target .EXE or .DLL Here</h3>
+        <p>Or click to browse from your computer</p>
+        <input type="file" id="fileInput" accept=".exe,.dll" style="display: none;">
+      </div>
+
+      <div id="uploadStatus" class="status-box hidden"></div>
+
+      <!-- Active Rules Catalog -->
+      <div class="rules-container">
+        <h3>Active Invariant Signatures (<span id="ruleCount">0</span>)</h3>
+        <div class="table-responsive">
+          <table class="data-table" id="rulesTable">
+            <thead>
+              <tr>
+                <th>Rule Name</th>
+                <th>Original File</th>
+                <th>Imphash</th>
+                <th>Rich Hash</th>
+                <th>Severity</th>
+              </tr>
+            </thead>
+            <tbody id="rulesBody">
+              <tr><td colspan="5" style="text-align:center; color:#888;">Loading active signatures...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Audit Feed / Report Viewer -->
+    <section class="section-panel" id="feed">
+      <div class="panel-header">
+        <h2>&#x25C9; Verification & Audit Lookup</h2>
+        <p>Enter the 6-digit PIN displayed on the scanner client screen to instantly review audit results.</p>
+      </div>
+
+      <!-- PIN Lookup Bar -->
+      <div class="pin-lookup-container" style="display:flex; gap:12px; margin-bottom:24px; max-width:480px;">
+        <input type="text" id="pinInput" placeholder="Enter 6-digit PIN (e.g. 155555)" maxlength="6" style="flex:1; padding:12px 18px; border-radius:6px; background:#0e141f; border:1px solid rgba(0,243,255,0.3); color:#fff; font-family:var(--font-mono); font-size:1rem; letter-spacing:2px; text-transform:uppercase;">
+        <button id="lookupBtn" class="btn-secondary" style="padding:12px 24px; cursor:pointer;">Lookup PIN</button>
+      </div>
+
+      <div id="liveReports" class="reports-grid">
+        <div class="empty-state">
+          No live client audits received yet. Download and run <code>AegisScanner.exe</code> to view real-time verdicts here.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <div><strong>AEGIS SCANNER</strong> &copy; 2026 // Defensive Forensic & Screenshare Verification Architecture</div>
+      <div class="footer-links">
+        <a href="#features">Engine Specs</a>
+        <a href="/download">Download Binary</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
